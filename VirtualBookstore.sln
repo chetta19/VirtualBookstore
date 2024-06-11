@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books", "Backend\Books\Book
 		stylecop.ruleset = stylecop.ruleset
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Test.Unit", "Books.Test.Unit\Books.Test.Unit.csproj", "{667CB035-D617-4C78-9337-36AEB6FED5F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Books.Test.Unit", "Backend\Books.Test.Unit\Books.Test.Unit.csproj", "{667CB035-D617-4C78-9337-36AEB6FED5F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
