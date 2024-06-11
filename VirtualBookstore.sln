@@ -6,6 +6,11 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{8D93499C-BFA0-4DEE-8E8A-34976204526A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Books", "Backend\Books\Books.csproj", "{1BB0F77A-44CC-4051-85E4-B5BBB83DE4E0}"
+ProjectSection(SolutionItems) = preProject
+		CodeAnalyzer.props = CodeAnalyzer.props
+		stylecop.json = stylecop.json
+		stylecop.ruleset = stylecop.ruleset
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
