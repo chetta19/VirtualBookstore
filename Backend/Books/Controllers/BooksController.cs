@@ -15,6 +15,15 @@ namespace Books
             this.bookRepository = bookRepository;
         }
 
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Put([FromBody] Book book)
+        {
+            await bookRepository.UpdateBook(book);
+            return new OkObjectResult(book);
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

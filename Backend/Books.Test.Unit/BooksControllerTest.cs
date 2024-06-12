@@ -50,5 +50,22 @@ namespace Books.Test.Unit
             var returnValue = Assert.IsType<Book>(createdAtActionResult.Value);
             Assert.Equal(BooksTestData.Book1, returnValue);
         }
+        [Fact]
+        public async Task Put_UpdatesBook_ReturnsOkObjectResult()
+        {
+            // Arrange
+            var bookToUpdate = BooksTestData.Book1;
+            bookToUpdate.Title = "Updated Title";
+            _mockRepo.Setup(repo => repo.UpdateBook(bookToUpdate)).Returns(Task.CompletedTask);
+
+            // Act
+            var result = await _controller.Put(bookToUpdate);
+
+            // Assert
+            _mockRepo.Verify(repo => repo.UpdateBook(bookToUpdate), Times.Once);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var returnValue = Assert.IsType<Book>(okResult.Value);
+            Assert.Equal(bookToUpdate, returnValue);
+        }
     }
 }

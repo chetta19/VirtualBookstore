@@ -12,5 +12,7 @@ namespace Books.Interfaces
 
 
         Task InsertBook(Book book);
+
+        Task UpdateBook(Book book);
     }
 }

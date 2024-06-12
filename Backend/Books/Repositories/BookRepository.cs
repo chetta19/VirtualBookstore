@@ -35,5 +35,14 @@ namespace Books.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateBook(Book book)
+        {
+            if(!_context.Books.Any(b => b.Id == book.Id))
+            {
+                throw new ArgumentException("Book not found");
+            }
+            _context.Books.Update(book);
+            await _context.SaveChangesAsync();
+        }
     }
 }

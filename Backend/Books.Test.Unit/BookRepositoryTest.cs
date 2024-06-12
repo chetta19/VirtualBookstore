@@ -96,5 +96,31 @@ namespace Books.Test.Unit
             // Assert
             Assert.Null(result);
         }
+        [Fact]
+        public async Task UpdateBook_UpdatesBookDetails()
+        {
+            // Arrange
+            await _repository.InsertBook(BooksTestData.Book1);
+
+            // Act
+            var bookToUpdate = BooksTestData.Book1;
+            bookToUpdate.Title = "Updated Title";
+            await _repository.UpdateBook(bookToUpdate);
+            var updatedBook = await _repository.GetBookById(bookToUpdate.Id);
+
+            // Assert
+            Assert.NotNull(updatedBook);
+            Assert.Equal("Updated Title", updatedBook.Title);
+        }
+        
+        [Fact]
+        public async Task UpdateBook_ThrowsArgumentException_WhenBookNotFound()
+        {
+            // Arrange
+            var bookToUpdate = BooksTestData.Book1;
+
+            // Act and Assert
+            await Assert.ThrowsAsync<ArgumentException>(() => _repository.UpdateBook(bookToUpdate));
+        }
     }
 }
