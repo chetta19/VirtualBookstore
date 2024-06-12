@@ -26,11 +26,6 @@ namespace Books.Repositories
         public void InsertBook(Book book)
         {
             _context.Books.Add(book);
-            Save();
-        }
-
-        public void Save()
-        {
             _context.SaveChanges();
         }
 

@@ -8,8 +8,6 @@ namespace Books.Interfaces
 
         Book? GetBookByISBN(string isbn);
 
-        void Save();
-
         void InsertBook(Book book);
     }
 }
