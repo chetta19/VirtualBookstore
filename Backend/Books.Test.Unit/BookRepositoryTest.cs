@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Books.Repositories;
 using Books.Data;
 using Books.Models;
+using FluentAssertions;
 
 namespace Books.Test.Unit
 {
@@ -32,7 +33,7 @@ namespace Books.Test.Unit
             var result = await _repository.GetAllBooks();
 
             // Assert
-            Assert.Equal(2, result.Count());
+            result.Count().Should().Be(2);
         }
 
         [Fact]
@@ -42,7 +43,7 @@ namespace Books.Test.Unit
             await _repository.InsertBook(BooksTestData.Book1);
 
             // Assert
-            Assert.Contains(BooksTestData.Book1, _context.Books);
+            _context.Books.Should().Contain(BooksTestData.Book1);
         }
         [Fact]
         public async Task GetBookByISBN_BookIsFound_ReturnsCorrectBook()
@@ -55,7 +56,7 @@ namespace Books.Test.Unit
             var result = await _repository.GetBookByISBN(BooksTestData.Book1.ISBN);
 
             // Assert
-            Assert.Equal(BooksTestData.Book1, result);
+            result.Should().BeEquivalentTo(BooksTestData.Book1);
         }
         [Fact]
         public async Task GetBookByISBN_ReturnsNull_WhenBookNotFound()
@@ -67,7 +68,7 @@ namespace Books.Test.Unit
             var result = await _repository.GetBookByISBN("456"); // ISBN that does not exist
 
             // Assert
-            Assert.Null(result);
+            result.Should().BeNull();
         }
 
         [Fact]
@@ -81,7 +82,7 @@ namespace Books.Test.Unit
             var result = await _repository.GetBookById(BooksTestData.Book1.Id);
 
             // Assert
-            Assert.Equal(BooksTestData.Book1, result);
+            result.Should().BeEquivalentTo(BooksTestData.Book1);
         }
 
         [Fact]
@@ -94,7 +95,7 @@ namespace Books.Test.Unit
             var result = await _repository.GetBookById("ID2"); // ID that does not exist
 
             // Assert
-            Assert.Null(result);
+            result.Should().BeNull();
         }
         [Fact]
         public async Task UpdateBook_UpdatesBookDetails()
@@ -109,10 +110,10 @@ namespace Books.Test.Unit
             var updatedBook = await _repository.GetBookById(bookToUpdate.Id);
 
             // Assert
-            Assert.NotNull(updatedBook);
-            Assert.Equal("Updated Title", updatedBook.Title);
+            updatedBook.Should().NotBeNull();
+            updatedBook!.Title.Should().Be("Updated Title");
         }
-        
+
         [Fact]
         public async Task UpdateBook_ThrowsArgumentException_WhenBookNotFound()
         {
@@ -120,7 +121,9 @@ namespace Books.Test.Unit
             var bookToUpdate = BooksTestData.Book1;
 
             // Act and Assert
-            await Assert.ThrowsAsync<ArgumentException>(() => _repository.UpdateBook(bookToUpdate));
+
+            await _repository.Invoking(y => y.UpdateBook(bookToUpdate))
+                             .Should().ThrowAsync<ArgumentException>();
         }
     }
 }

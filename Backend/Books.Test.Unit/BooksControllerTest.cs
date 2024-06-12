@@ -2,6 +2,7 @@ using Moq;
 using Books.Models;
 using Microsoft.AspNetCore.Mvc;
 using Books.Interfaces;
+using FluentAssertions;
 
 namespace Books.Test.Unit
 {
@@ -31,9 +32,9 @@ namespace Books.Test.Unit
             var result = await _controller.Get();
 
             // Assert
-            var actionResult = Assert.IsType<OkObjectResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Book>>(actionResult.Value);
-            Assert.Equal(2, model.Count());
+            var actionResult = result.Should().BeOfType<OkObjectResult>().Subject;
+            var model = actionResult.Value.Should().BeAssignableTo<IEnumerable<Book>>().Subject;
+            model.Count().Should().Be(2);
         }
         [Fact]
         public async Task Post_CreatesBook_ReturnsCreatedAtActionResult()
@@ -46,9 +47,9 @@ namespace Books.Test.Unit
 
             // Assert
             _mockRepo.Verify(repo => repo.InsertBook(BooksTestData.Book1), Times.Once);
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
-            var returnValue = Assert.IsType<Book>(createdAtActionResult.Value);
-            Assert.Equal(BooksTestData.Book1, returnValue);
+            var createdAtActionResult = result.Should().BeOfType<CreatedAtActionResult>().Subject;
+            var returnValue = createdAtActionResult.Value.Should().BeOfType<Book>().Subject;
+            returnValue.Should().Be(BooksTestData.Book1);
         }
         [Fact]
         public async Task Put_UpdatesBook_ReturnsOkObjectResult()
@@ -63,9 +64,9 @@ namespace Books.Test.Unit
 
             // Assert
             _mockRepo.Verify(repo => repo.UpdateBook(bookToUpdate), Times.Once);
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var returnValue = Assert.IsType<Book>(okResult.Value);
-            Assert.Equal(bookToUpdate, returnValue);
+            var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
+            var returnValue = okResult.Value.Should().BeOfType<Book>().Subject;
+            returnValue.Should().Be(bookToUpdate);
         }
     }
 }
