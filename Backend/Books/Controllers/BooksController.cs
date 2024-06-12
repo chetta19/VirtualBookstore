@@ -1,15 +1,15 @@
 using Books.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Books.Controllers
+namespace Books
 {
     [Route("api/books")]
     [ApiController]
-    public class BooksControllers : ControllerBase
+    public class BooksController : ControllerBase
     {
         private IBookRepository bookRepository;
 
-        public BooksControllers(IBookRepository bookRepository)
+        public BooksController(IBookRepository bookRepository)
         {
             this.bookRepository = bookRepository;
         }

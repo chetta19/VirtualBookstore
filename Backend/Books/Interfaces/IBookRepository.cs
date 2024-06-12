@@ -6,7 +6,7 @@ namespace Books.Interfaces
     {
         IEnumerable<Book> GetAllBooks();
 
-        Book GetBookByISBN(string isbn);
+        Book? GetBookByISBN(string isbn);
 
         void Save();
 

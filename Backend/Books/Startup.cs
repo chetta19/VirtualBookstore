@@ -2,6 +2,8 @@
 using Books.Interfaces;
 using Books.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 
 namespace ProductMicroservice
@@ -17,7 +19,14 @@ namespace ProductMicroservice
 
     public void ConfigureServices(IServiceCollection services)
     {
-      //services.AddDbContext<BookContext>(o => o.UseSqlServer(Configuration.GetConnectionString("ProductDB")));
+      var connectionString = Configuration.GetConnectionString("BooksMongoDB");
+      if (connectionString == null)
+      {
+        throw new ArgumentNullException("BooksMongoDB connection string is missing");
+      }
+
+      services.AddControllers();
+      services.AddDbContext<BookContext>(o => o.UseMongoDB(connectionString, "Books"));
       services.AddTransient<IBookRepository, BookRepository>();
     }
 
@@ -32,6 +41,11 @@ namespace ProductMicroservice
         app.UseHsts();
       }
       app.UseHttpsRedirection();
+      app.UseRouting();
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllers();
+      });
     }
   }
 }

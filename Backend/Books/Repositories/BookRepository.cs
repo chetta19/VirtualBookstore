@@ -18,7 +18,7 @@ namespace Books.Repositories
             return _context.Books.ToList();
         }
 
-        public Book GetBookByISBN(string isbn)
+        public Book? GetBookByISBN(string isbn)
         {
             return _context.Books.FirstOrDefault(book => book.ISBN == isbn);
         }

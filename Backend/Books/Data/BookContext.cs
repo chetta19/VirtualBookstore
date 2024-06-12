@@ -1,19 +1,22 @@
 using Books.Models;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Driver;
 
 namespace Books.Data
 {
     public class BookContext : DbContext
     {
+        public DbSet<Book> Books { get; set; }
+
         public BookContext(DbContextOptions<BookContext> options)
             : base(options)
         {
         }
 
-        public DbSet<Book> Books { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Book>().HasData(
                 new Book
                 {
