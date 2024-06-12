@@ -1,4 +1,5 @@
 using Books.Interfaces;
+using Books.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Books
@@ -21,6 +22,15 @@ namespace Books
         {
             var books = bookRepository.GetAllBooks();
             return new OkObjectResult(books);
+        }
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult Put([FromBody] Book book)
+        {
+            bookRepository.InsertBook(book);
+            return new OkResult();
         }
     }
 }
