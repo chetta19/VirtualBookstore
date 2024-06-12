@@ -8,6 +8,8 @@ namespace Books.Interfaces
 
         Task<Book?> GetBookByISBN(string isbn);
 
+        Task<Book?> GetBookById(string id);
+
 
         Task InsertBook(Book book);
     }

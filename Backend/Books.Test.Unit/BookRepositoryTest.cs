@@ -25,10 +25,8 @@ namespace Books.Test.Unit
         public async Task GetAllBooks_ReturnsAllBooks()
         {
             // Arrange
-            var book1 = new Book { Id = "ID1", ISBN = "123", Title = "Book 1", Author = "Author 1" };
-            var book2 = new Book { Id = "ID2", ISBN = "456", Title = "Book 2", Author = "Author 2" };
-            await _repository.InsertBook(book1);
-            await _repository.InsertBook(book2);
+            await _repository.InsertBook(BooksTestData.Book1);
+            await _repository.InsertBook(BooksTestData.Book2);
 
             // Act
             var result = await _repository.GetAllBooks();
@@ -40,40 +38,60 @@ namespace Books.Test.Unit
         [Fact]
         public async Task InsertBook_AddsBookToDatabase()
         {
-            // Arrange
-            var book = new Book { Id = "ID1", ISBN = "123", Title = "Book 1", Author = "Author 1" };
-
             // Act
-            await _repository.InsertBook(book);
+            await _repository.InsertBook(BooksTestData.Book1);
 
             // Assert
-            Assert.Contains(book, _context.Books);
+            Assert.Contains(BooksTestData.Book1, _context.Books);
         }
         [Fact]
         public async Task GetBookByISBN_BookIsFound_ReturnsCorrectBook()
         {
             // Arrange
-            var book1 = new Book { Id = "ID1", ISBN = "123", Title = "Book 1", Author = "Author 1" };
-            var book2 = new Book { Id = "ID2", ISBN = "456", Title = "Book 2", Author = "Author 2" };
-            await _repository.InsertBook(book1);
-            await _repository.InsertBook(book2);
+            await _repository.InsertBook(BooksTestData.Book1);
+            await _repository.InsertBook(BooksTestData.Book2);
 
             // Act
-            var result = await _repository.GetBookByISBN("123");
+            var result = await _repository.GetBookByISBN(BooksTestData.Book1.ISBN);
 
             // Assert
-            Assert.Equal(book1, result);
+            Assert.Equal(BooksTestData.Book1, result);
         }
         [Fact]
         public async Task GetBookByISBN_ReturnsNull_WhenBookNotFound()
         {
             // Arrange
-            var book = new Book { Id = "ID1", ISBN = "123", Title = "Book 1", Author = "Author 1" };
-            await _repository.InsertBook(book);
-            await _context.SaveChangesAsync();
+            await _repository.InsertBook(BooksTestData.Book1);
 
             // Act
             var result = await _repository.GetBookByISBN("456"); // ISBN that does not exist
+
+            // Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetBookById_BookIsFound_ReturnsCorrectBook()
+        {
+            // Arrange
+            await _repository.InsertBook(BooksTestData.Book1);
+            await _repository.InsertBook(BooksTestData.Book2);
+
+            // Act
+            var result = await _repository.GetBookById(BooksTestData.Book1.Id);
+
+            // Assert
+            Assert.Equal(BooksTestData.Book1, result);
+        }
+
+        [Fact]
+        public async Task GetBookById_ReturnsNull_WhenBookNotFound()
+        {
+            // Arrange
+            await _repository.InsertBook(BooksTestData.Book1);
+
+            // Act
+            var result = await _repository.GetBookById("ID2"); // ID that does not exist
 
             // Assert
             Assert.Null(result);

@@ -19,6 +19,11 @@ namespace Books.Repositories
             return await _context.Books.ToListAsync();
         }
 
+        public async Task<Book?> GetBookById(string id)
+        {
+            return await _context.Books.FirstOrDefaultAsync(book => book.Id == id);
+        }
+
         public async Task<Book?> GetBookByISBN(string isbn)
         {
             return await _context.Books.FirstOrDefaultAsync(book => book.ISBN == isbn);
