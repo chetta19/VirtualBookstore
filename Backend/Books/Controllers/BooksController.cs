@@ -18,18 +18,18 @@ namespace Books
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var books = bookRepository.GetAllBooks();
+            var books = await bookRepository.GetAllBooks();
             return new OkObjectResult(books);
         }
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult Put([FromBody] Book book)
+        public async Task<IActionResult> Put([FromBody] Book book)
         {
-            bookRepository.InsertBook(book);
+            await bookRepository.InsertBook(book);
             return new OkResult();
         }
     }

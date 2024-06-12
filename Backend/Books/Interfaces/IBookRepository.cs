@@ -4,10 +4,11 @@ namespace Books.Interfaces
 {
     public interface IBookRepository
     {
-        IEnumerable<Book> GetAllBooks();
+        Task<IEnumerable<Book>> GetAllBooks();
 
-        Book? GetBookByISBN(string isbn);
+        Task<Book?> GetBookByISBN(string isbn);
 
-        void InsertBook(Book book);
+
+        Task InsertBook(Book book);
     }
 }

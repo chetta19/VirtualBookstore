@@ -1,6 +1,7 @@
 using Books.Data;
 using Books.Interfaces;
 using Books.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Books.Repositories
 {
@@ -13,20 +14,20 @@ namespace Books.Repositories
             _context = context;
         }
 
-        public IEnumerable<Book> GetAllBooks()
+        public async Task<IEnumerable<Book>> GetAllBooks()
         {
-            return _context.Books.ToList();
+            return await _context.Books.ToListAsync();
         }
 
-        public Book? GetBookByISBN(string isbn)
+        public async Task<Book?> GetBookByISBN(string isbn)
         {
-            return _context.Books.FirstOrDefault(book => book.ISBN == isbn);
+            return await _context.Books.FirstOrDefaultAsync(book => book.ISBN == isbn);
         }
 
-        public void InsertBook(Book book)
+        public async Task InsertBook(Book book)
         {
-            _context.Books.Add(book);
-            _context.SaveChanges();
+            await _context.Books.AddAsync(book);
+            await _context.SaveChangesAsync();
         }
 
     }
