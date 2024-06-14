@@ -12,6 +12,9 @@
         "cwd": "${workspaceFolder}/Backend/Books/bin/Debug/net8.0/",
         "console": "internalConsole",
         "stopAtEntry": false,
-        "preLaunchTask": "buildBooks"
+        "preLaunchTask": "buildBooks",
+        "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
     }]
 }
