@@ -1,0 +1,12 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "buildBooks",
+            "command": "dotnet",
+            "type": "process",
+            "args": ["build", "${workspaceFolder}/Backend/Books/Books.csproj"],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
