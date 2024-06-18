@@ -28,6 +28,17 @@ namespace ProductMicroservice
       services.AddControllers();
       services.AddDbContext<BookContext>(o => o.UseMongoDB(connectionString, "Books"));
       services.AddTransient<IBookRepository, BookRepository>();
+
+      services.AddCors(options =>
+      {
+        options.AddPolicy("AllowAllOrigins",
+            builder =>
+            {
+              builder.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+      });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -42,6 +53,7 @@ namespace ProductMicroservice
       }
       app.UseHttpsRedirection();
       app.UseRouting();
+      app.UseCors("AllowAllOrigins");
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapControllers();
