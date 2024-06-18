@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 function BookForm() {
   const [book, setBook] = useState({
-    Id: '',
+    Id: uuidv4(),
     ISBN: '',
     Title: '',
     Author: '',
@@ -18,9 +19,14 @@ function BookForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/books', {
+    fetch('http://127.0.0.1:5000/api/books', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "POST,",
+      },
       body: JSON.stringify(book),
     })
       .then((response) => response.json())
@@ -30,10 +36,6 @@ function BookForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        ID:
-        <input type="text" name="Id" onChange={handleChange} />
-      </label>
       <label>
         ISBN:
         <input type="text" name="ISBN" onChange={handleChange} />
