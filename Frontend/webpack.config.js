@@ -22,6 +22,15 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
+      // ...
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader', // Injects styles into DOM
+          'css-loader', // Turns css into commonjs
+          'postcss-loader', // Uses postcss (Tailwind CSS is a PostCSS plugin)
+        ],
+      },
     ],
   },
   resolve: {

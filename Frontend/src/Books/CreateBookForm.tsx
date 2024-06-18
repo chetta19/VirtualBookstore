@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import * as yup from 'yup';
+import '../tailwind.css';
+
+const schema = yup.object().shape({
+  ISBN: yup.string().required('ISBN is required'),
+  Title: yup.string().required('Title is required'),
+  Author: yup.string().required('Author is required'),
+  Price: yup.number().positive('Price must be a positive number').required('Price is required'),
+  CoverImage: yup.string().url('Must be a valid URL for an image').required('Cover image is required'),
+});
 
 function BookForm() {
   const [book, setBook] = useState({
@@ -13,25 +23,34 @@ function BookForm() {
     Description: '',
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
     setBook({ ...book, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    fetch('http://127.0.0.1:5000/api/books', {
-      method: 'POST',
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "POST,",
-      },
-      body: JSON.stringify(book),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error('Error:', error));
+  const handleSubmit = async (e) => {
+    try {
+      await schema.validate(book);
+      setErrors({});
+      e.preventDefault();
+      await fetch('http://127.0.0.1:5000/api/books', {
+        method: 'POST',
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST,",
+        },
+        body: JSON.stringify(book),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error('Error:', error));
+    } catch (err) {
+      setErrors(err.errors);
+    }
+
   };
 
   return (
